@@ -2,7 +2,12 @@ package movierecommender;
 
 public class Main {
     public static void main(String[] args) {
-        // If your JFrame class is called MainFrame, uncomment this:
-        // new MainFrame().setVisible(true);
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                GUI mainInterface = new GUI();
+                mainInterface.setLocationRelativeTo(null); // Centers the window on the screen
+                mainInterface.setVisible(true);
+            }
+        });
     }
 }

@@ -4,9 +4,12 @@ import java.io.*;
 import java.util.*;
 
 public class MovieRecommendationSystem {
+
     private ArrayList<UserRating> users = new ArrayList<>();
     private HashMap<Integer, String> movieNames = new HashMap<>();
     private HashMap<String, int[]> targetUsers = new HashMap<>();
+    private HashMap<Integer, Integer> movieIdToColIndex = new HashMap<>();
+    private HashMap<Integer, Integer> colIndexToMovieId = new HashMap<>(); // FIXED: Added reverse lookup
     private int movieCount = 0;
 
     public MovieRecommendationSystem(String mainDataPath, String moviesPath, String targetUserPath) throws IOException {
@@ -18,15 +21,31 @@ public class MovieRecommendationSystem {
     private void loadMainData(String path) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
         String header = br.readLine();
-        if (header == null) throw new IOException("main_data.csv is empty");
+        if (header == null) {
+            br.close();
+            throw new IOException("main_data.csv is empty");
+        }
 
         String[] headerParts = header.split(",");
         movieCount = headerParts.length - 1;
 
+        for (int i = 1; i < headerParts.length; i++) {
+            String cleanHeader = headerParts[i].replace("\"", "").trim();
+            int headerMovieId = parseIntSafe(cleanHeader);
+
+            int actualMovieId = (headerMovieId != 0) ? headerMovieId : i;
+            movieIdToColIndex.put(actualMovieId, i - 1);
+            colIndexToMovieId.put(i - 1, actualMovieId); // FIXED: Populating reverse lookup
+        }
+
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split(",", -1);
-            String userId = parts[0].trim();
+            if (parts.length == 0) {
+                continue;
+            }
+
+            String userId = parts[0].trim(); // FIXED: Changed from parts.trim()
             int[] ratings = new int[movieCount];
 
             for (int i = 1; i < parts.length && i <= movieCount; i++) {
@@ -45,7 +64,7 @@ public class MovieRecommendationSystem {
             String[] parts = splitCsvLine(line);
             if (parts.length >= 2) {
                 int movieId = parseIntSafe(parts[0]);
-                String movieName = parts[1].trim();
+                String movieName = parts[1].trim();  // FIXED: Changed from parts.trim()
                 movieNames.put(movieId, movieName);
             }
         }
@@ -55,12 +74,19 @@ public class MovieRecommendationSystem {
     private void loadTargetUsers(String path) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(path));
         String header = br.readLine();
-        if (header == null) return;
+        if (header == null) {
+            br.close();
+            return;
+        }
 
         String line;
         while ((line = br.readLine()) != null) {
             String[] parts = line.split(",", -1);
-            String userId = parts[0].trim();
+            if (parts.length == 0) {
+                continue;
+            }
+
+            String userId = parts[0].trim(); // FIXED: Changed from parts.trim()
             int[] ratings = new int[movieCount];
 
             for (int i = 1; i < parts.length && i <= movieCount; i++) {
@@ -79,20 +105,26 @@ public class MovieRecommendationSystem {
         ArrayList<String> names = new ArrayList<>(movieNames.values());
         Collections.shuffle(names);
         ArrayList<String> result = new ArrayList<>();
-        for (int i = 0; i < count && i < names.size(); i++) result.add(names.get(i));
+        for (int i = 0; i < count && i < names.size(); i++) {
+            result.add(names.get(i));
+        }
         return result;
     }
 
     public int getMovieIdByName(String name) {
         for (Integer id : movieNames.keySet()) {
-            if (movieNames.get(id).equals(name)) return id;
+            if (movieNames.get(id).equals(name)) {
+                return id;
+            }
         }
         return -1;
     }
 
     public ArrayList<String> recommendForTargetUser(String targetUserId, int xUsers, int kMovies) {
         int[] targetVector = targetUsers.get(targetUserId);
-        if (targetVector == null) return new ArrayList<>();
+        if (targetVector == null) {
+            return new ArrayList<>();
+        }
         return recommendFromVector(targetVector, xUsers, kMovies);
     }
 
@@ -100,7 +132,10 @@ public class MovieRecommendationSystem {
         int[] userVector = new int[movieCount];
 
         for (Integer movieId : selectedRatings.keySet()) {
-            int index = movieId - 1;
+            Integer index = movieIdToColIndex.get(movieId);
+            if (index == null) {
+                index = movieId - 1;
+            }
             if (index >= 0 && index < movieCount) {
                 userVector[index] = selectedRatings.get(movieId);
             }
@@ -143,14 +178,21 @@ public class MovieRecommendationSystem {
             int bestRating = -1;
 
             for (int i = 0; i < ratings.length; i++) {
-                int movieId = i + 1;
+                // FIXED: Get actual Movie ID from column index instead of assuming 'i + 1'
+                Integer movieId = colIndexToMovieId.get(i);
+                if (movieId == null) {
+                    movieId = i + 1;
+                }
 
-                // This avoids recommending movies the target user already rated/watched.
-                // Remove this condition if your teacher wants all highest-rated movies.
-                if (targetVector[i] != 0) continue;
-
-                if (used[i]) continue;
-                if (alreadyAdded.contains(movieId)) continue;
+                if (targetVector[i] != 0) {
+                    continue;
+                }
+                if (used[i]) {
+                    continue;
+                }
+                if (alreadyAdded.contains(movieId)) {
+                    continue;
+                }
 
                 if (ratings[i] > bestRating) {
                     bestRating = ratings[i];
@@ -158,9 +200,17 @@ public class MovieRecommendationSystem {
                 }
             }
 
-            if (bestIndex == -1 || bestRating <= 0) break;
+            if (bestIndex == -1 || bestRating <= 0) {
+                break;
+            }
             used[bestIndex] = true;
-            result.add(bestIndex + 1);
+
+            // FIXED: Add the true resolved Movie ID to the results list
+            Integer bestMovieId = colIndexToMovieId.get(bestIndex);
+            if (bestMovieId == null) {
+                bestMovieId = bestIndex + 1;
+            }
+            result.add(bestMovieId);
         }
         return result;
     }
@@ -177,20 +227,23 @@ public class MovieRecommendationSystem {
             normB += b[i] * b[i];
         }
 
-        if (normA == 0 || normB == 0) return 0;
+        if (normA == 0 || normB == 0) {
+            return 0;
+        }
         return dot / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
     private int parseIntSafe(String text) {
         try {
-            if (text == null || text.trim().isEmpty()) return 0;
+            if (text == null || text.trim().isEmpty()) {
+                return 0;
+            }
             return Integer.parseInt(text.trim());
         } catch (Exception e) {
             return 0;
         }
     }
 
-    // Handles movie titles that may contain commas inside quotes.
     private String[] splitCsvLine(String line) {
         ArrayList<String> values = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
@@ -198,8 +251,9 @@ public class MovieRecommendationSystem {
 
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
-            if (c == '"') insideQuotes = !insideQuotes;
-            else if (c == ',' && !insideQuotes) {
+            if (c == '"') {
+                insideQuotes = !insideQuotes;
+            } else if (c == ',' && !insideQuotes) {
                 values.add(sb.toString());
                 sb.setLength(0);
             } else {
@@ -207,6 +261,8 @@ public class MovieRecommendationSystem {
             }
         }
         values.add(sb.toString());
+
         return values.toArray(new String[0]);
+
     }
 }

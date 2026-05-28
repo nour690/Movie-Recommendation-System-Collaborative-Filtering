@@ -18,9 +18,19 @@ public class GUI extends javax.swing.JFrame {
         try {
             system = new MovieRecommendationSystem("main_data.csv", "movies.csv", "target_user.csv");
 
+            // Clear default NetBeans items just in case
+            cmbTargetUser.removeAllItems();
+
             for (String id : system.getTargetUserIds()) {
                 cmbTargetUser.addItem(id);
             }
+            
+            btnTargetRecommend.setText("GetRecommendations");
+            txtX1.setText(""); txtX1.setToolTipText("Enter X (Number of similar users)");
+            txtK1.setText(""); txtK1.setToolTipText("Enter K (Movies per user)");
+            this.setTitle("Movie Recommender - Target User");
+            this.setLocationRelativeTo(null); // Center window
+            // -------------------------------
 
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error loading files: " + e.getMessage());
@@ -48,6 +58,11 @@ public class GUI extends javax.swing.JFrame {
 
         cmbTargetUser.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         cmbTargetUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbTargetUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTargetUserActionPerformed(evt);
+            }
+        });
 
         txtX1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
@@ -137,6 +152,10 @@ public class GUI extends javax.swing.JFrame {
         GUI2 g = new GUI2();
         g.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbTargetUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTargetUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTargetUserActionPerformed
 
     /**
      * @param args the command line arguments
