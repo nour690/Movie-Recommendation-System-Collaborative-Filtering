@@ -21,13 +21,16 @@ public class GUI extends javax.swing.JFrame {
             // Clear default NetBeans items just in case
             cmbTargetUser.removeAllItems();
 
-            for (String id : system.getTargetUserIds()) {
+            java.util.ArrayList<String> ids = system.getTargetUserIds();
+
+            ids.sort((a, b) -> Integer.compare(
+                    Integer.parseInt(a),
+                    Integer.parseInt(b)
+            ));
+
+            for (String id : ids) {
                 cmbTargetUser.addItem(id);
             }
-            
-            btnTargetRecommend.setText("GetRecommendations");
-            txtX1.setText(""); txtX1.setToolTipText("Enter X (Number of similar users)");
-            txtK1.setText(""); txtK1.setToolTipText("Enter K (Movies per user)");
             this.setTitle("Movie Recommender - Target User");
             this.setLocationRelativeTo(null); // Center window
             // -------------------------------
@@ -47,12 +50,14 @@ public class GUI extends javax.swing.JFrame {
     private void initComponents() {
 
         cmbTargetUser = new javax.swing.JComboBox<>();
-        txtX1 = new javax.swing.JTextField();
-        txtK1 = new javax.swing.JTextField();
         btnTargetRecommend = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaTargetResult = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        btnNextPage = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        spnX1 = new javax.swing.JSpinner();
+        spnK1 = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,12 +69,8 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        txtX1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        txtK1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
         btnTargetRecommend.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        btnTargetRecommend.setText("jButton1");
+        btnTargetRecommend.setText("Get Recommendations");
         btnTargetRecommend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTargetRecommendActionPerformed(evt);
@@ -80,13 +81,25 @@ public class GUI extends javax.swing.JFrame {
         txtAreaTargetResult.setRows(5);
         jScrollPane1.setViewportView(txtAreaTargetResult);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Next Page");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnNextPage.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnNextPage.setText("Next Page");
+        btnNextPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnNextPageActionPerformed(evt);
             }
         });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setText("Similar Users :");
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel2.setText("Movies :");
+
+        spnX1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        spnX1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
+
+        spnK1.setFont(new java.awt.Font("Helvetica Neue", 0, 18)); // NOI18N
+        spnK1.setModel(new javax.swing.SpinnerNumberModel(1, 1, 5, 1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -95,16 +108,22 @@ public class GUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtX1)
                     .addComponent(cmbTargetUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtK1)
-                    .addComponent(btnTargetRecommend, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE))
+                    .addComponent(btnTargetRecommend, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(spnX1)
+                            .addComponent(spnK1))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnNextPage, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48))
         );
         layout.setVerticalGroup(
@@ -115,14 +134,18 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(cmbTargetUser, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnX1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addComponent(txtX1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtK1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(40, 40, 40)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnK1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(36, 36, 36)
                         .addComponent(btnTargetRecommend, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(36, 36, 36)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
+                .addComponent(btnNextPage, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
 
@@ -133,8 +156,9 @@ public class GUI extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             String targetId = cmbTargetUser.getSelectedItem().toString();
-            int x = Integer.parseInt(txtX1.getText());
-            int k = Integer.parseInt(txtK1.getText());
+
+            int x = (int) spnX1.getValue();
+            int k = (int) spnK1.getValue();
 
             java.util.ArrayList<String> recs = system.recommendForTargetUser(targetId, x, k);
 
@@ -142,16 +166,19 @@ public class GUI extends javax.swing.JFrame {
             for (String movie : recs) {
                 txtAreaTargetResult.append(movie + "\n");
             }
+
         } catch (Exception e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_btnTargetRecommendActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextPageActionPerformed
         // TODO add your handling code here:
-        GUI2 g = new GUI2();
-        g.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+//        btnNextPage.setEnabled(false);
+        GUI2 page2 = new GUI2();
+        page2.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnNextPageActionPerformed
 
     private void cmbTargetUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTargetUserActionPerformed
         // TODO add your handling code here:
@@ -193,12 +220,14 @@ public class GUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnNextPage;
     private javax.swing.JButton btnTargetRecommend;
     private javax.swing.JComboBox<String> cmbTargetUser;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSpinner spnK1;
+    private javax.swing.JSpinner spnX1;
     private javax.swing.JTextArea txtAreaTargetResult;
-    private javax.swing.JTextField txtK1;
-    private javax.swing.JTextField txtX1;
     // End of variables declaration//GEN-END:variables
 }
