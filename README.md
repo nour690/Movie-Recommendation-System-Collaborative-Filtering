@@ -49,19 +49,25 @@ The system recommends movies in two ways:
 
 ### Target User Recommendation Output
 
-![Target User Output](Screenshots/screenshotstarget-user-output.png)
+<p align="center">
+  <img src="Screenshots/screenshotstarget-user-output.png" width="700">
+</p>
 
 ---
 
 ### Manual Movie Rating Screen
 
-![Manual Rating Output](Screenshots/screenshotsmanual-rating-output.png)
+<p align="center">
+  <img src="Screenshots/screenshotsmanual-rating-output.png" width="700">
+</p>
 
 ---
 
 ### Duplicate Movie Selection Validation
 
-![Duplicate Movie Validation](Screenshots/screenshotsduplicate-validation.png)
+<p align="center">
+  <img src="Screenshots/screenshotsduplicate-validation.png" width="700">
+</p>
 
 ---
 
