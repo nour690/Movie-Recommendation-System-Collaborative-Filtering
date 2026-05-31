@@ -17,15 +17,15 @@ The system recommends movies in two ways:
 
 ### Target User Recommendation Output
 
-![Target User Output](screenshots/target-user-output.png)
+![Target User Output](screenshots/target-user-output.jpeg)
 
 ### Manual Movie Rating Screen
 
-![Manual Rating Output](screenshots/manual-rating-output.png)
+![Manual Rating Output](screenshots/manual-rating-output.jpeg)
 
 ### Duplicate Movie Selection Validation
 
-![Duplicate Movie Validation](screenshots/duplicate-validation.png)
+![Duplicate Movie Validation](screenshots/duplicate-validation.jpeg)
 
 ---
 
