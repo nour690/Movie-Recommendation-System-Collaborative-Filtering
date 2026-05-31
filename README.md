@@ -13,19 +13,25 @@ The system recommends movies in two ways:
 
 ### Target User Screen - Design Preview
 
-![Target User Design](Screenshots/screenshots/target-user-design.png)
+![Target User Design](Screenshots/screenshotstarget-user-design.png)
+
+---
 
 ### Target User Recommendation Output
 
-![Target User Output](Screenshots/screenshots/target-user-output.png)
+![Target User Output](Screenshots/screenshotstarget-user-output.png)
+
+---
 
 ### Manual Movie Rating Screen
 
-![Manual Rating Output](Screenshots/screenshots/manual-rating-output.png)
+![Manual Rating Output](Screenshots/screenshotsmanual-rating-output.png)
+
+---
 
 ### Duplicate Movie Selection Validation
 
-![Duplicate Movie Validation](Screenshots/screenshots/duplicate-validation.png)
+![Duplicate Movie Validation](Screenshots/screenshotsduplicate-validation.png)
 
 ---
 
@@ -34,22 +40,26 @@ The system recommends movies in two ways:
 ### Existing User Recommendation
 
 - Select a target user from `target_user.csv`
-- Choose number of similar users
-- Choose number of movies per user
-- Compute cosine similarity with users from `main_data.csv`
-- Store similar users in a Max Heap
-- Display movie recommendations by movie name
+- Enter number of similar users (**X**)
+- Enter number of movies per user (**K**)
+- Compute cosine similarity against all users
+- Store users in Max Heap
+- Extract most similar users
+- Display recommended movie names only
+- Prevent duplicate recommendations
 
 ---
 
 ### New User Recommendation
 
 - Select 5 different movies
-- Give each movie a rating from 1 to 5
-- Convert ratings into a user vector
-- Compare the new user with users in `main_data.csv`
-- Store similar users in a Max Heap
-- Recommend movies not already rated by the user
+- Enter ratings from **1–5**
+- Build a user vector
+- Compute cosine similarity with existing users
+- Store similar users in heap
+- Retrieve top movie recommendations
+- Ignore movies already rated by user
+- Prevent duplicate selections
 
 ---
 
@@ -59,39 +69,61 @@ The system recommends movies in two ways:
 
 Used to store users according to similarity score.
 
-The user with the highest similarity is kept at the root.
+Functions:
+
+- Insert
+- Extract maximum
+- Heapify
+
+The root always keeps the most similar user.
+
+---
 
 ### HashMap
 
 Used for:
 
-- Movie ID to movie name
-- Movie ID to column index
-- Column index to movie ID
+- Movie ID → movie name
+- Movie ID → column index
+- Column index → movie ID
+
+---
 
 ### ArrayList
 
 Used for:
 
-- User records
-- Movie names
-- Recommendation results
+- Users
+- Recommendations
+- Target users
+- Random movie selections
 
 ---
 
-## Recommendation Process
+## Recommendation Algorithm
 
-1. Read user ratings from CSV files
-2. Compute cosine similarity
-3. Insert users into Max Heap
-4. Extract most similar users
-5. Retrieve top-rated movies
-6. Display `X * K` recommendations
+### Existing User
 
-Where:
+1. Select target user
+2. Read ratings
+3. Compute cosine similarity
+4. Insert users into heap
+5. Extract top X users
+6. Get top K movies
+7. Display total **X × K** recommendations
 
-- `X` = number of similar users
-- `K` = number of movies per user
+---
+
+### New User
+
+1. Select 5 movies
+2. Enter ratings
+3. Convert into vector
+4. Compute similarity
+5. Insert users into heap
+6. Extract top users
+7. Skip already rated movies
+8. Show recommendations
 
 ---
 
@@ -111,3 +143,54 @@ main_data.csv
 movies.csv
 target_user.csv
 pom.xml
+README.md
+```
+
+---
+
+## Technologies Used
+
+- Java
+- Java Swing
+- Maven
+- CSV file handling
+- Heap data structure
+- Cosine similarity
+
+---
+
+## How to Run
+
+Make sure these files are together:
+
+```text
+DataStructuresProject2-1.0-SNAPSHOT.jar
+main_data.csv
+movies.csv
+target_user.csv
+```
+
+Then run the JAR file.
+
+---
+
+## Example Output
+
+```text
+Heat (1995) | similar user: 93 | similarity: 0.0392
+Batman (1989) | similar user: 93 | similarity: 0.0392
+```
+
+---
+
+## Course Information
+
+This project was developed for the **Data Structures** course.
+
+Main concepts used:
+
+- Heap
+- Collaborative filtering
+- Cosine similarity
+- CSV processing
+- Java Swing GUI
