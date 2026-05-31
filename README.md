@@ -9,32 +9,6 @@ The system recommends movies in two ways:
 
 ---
 
-## Project Screenshots
-
-### Target User Screen - Design Preview
-
-![Target User Design](Screenshots/screenshotstarget-user-design.png)
-
----
-
-### Target User Recommendation Output
-
-![Target User Output](Screenshots/screenshotstarget-user-output.png)
-
----
-
-### Manual Movie Rating Screen
-
-![Manual Rating Output](Screenshots/screenshotsmanual-rating-output.png)
-
----
-
-### Duplicate Movie Selection Validation
-
-![Duplicate Movie Validation](Screenshots/screenshotsduplicate-validation.png)
-
----
-
 ## Features
 
 ### Existing User Recommendation
@@ -60,6 +34,34 @@ The system recommends movies in two ways:
 - Retrieve top movie recommendations
 - Ignore movies already rated by user
 - Prevent duplicate selections
+
+---
+
+## Project Screenshots
+
+### Target User Screen - Design Preview
+
+<p align="center">
+  <img src="Screenshots/screenshotstarget-user-design.png" width="700">
+</p>
+
+---
+
+### Target User Recommendation Output
+
+![Target User Output](Screenshots/screenshotstarget-user-output.png)
+
+---
+
+### Manual Movie Rating Screen
+
+![Manual Rating Output](Screenshots/screenshotsmanual-rating-output.png)
+
+---
+
+### Duplicate Movie Selection Validation
+
+![Duplicate Movie Validation](Screenshots/screenshotsduplicate-validation.png)
 
 ---
 
