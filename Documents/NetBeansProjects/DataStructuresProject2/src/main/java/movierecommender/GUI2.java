@@ -3,6 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package movierecommender;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import javax.swing.*;
 
 /**
  *
@@ -11,11 +15,16 @@ package movierecommender;
 public class GUI2 extends javax.swing.JFrame {
 
     private MovieRecommendationSystem system;
+    private GUI previousPage;
 
     /**
      * Creates new form GUI2
      */
     public GUI2() {
+        this(null);
+    }
+    public GUI2(GUI previousPage) {
+        this.previousPage = previousPage;
         initComponents();
         try {
             cmbMovie1.removeAllItems();
@@ -26,7 +35,7 @@ public class GUI2 extends javax.swing.JFrame {
             this.setLocationRelativeTo(null);
             system = new MovieRecommendationSystem("main_data.csv", "movies.csv", "target_user.csv");
 
-            java.util.ArrayList<String> randomMovies = system.getRandomMovieNames(10);
+            ArrayList<String> randomMovies = system.getRandomMovieNames(10);
 
             for (String movie : randomMovies) {
                 cmbMovie1.addItem(movie);
@@ -37,7 +46,7 @@ public class GUI2 extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error loading files: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error loading files: " + e.getMessage());
         }
     }
 
@@ -247,11 +256,7 @@ public class GUI2 extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void addMovieRating(java.util.HashMap<Integer, Integer> selectedRatings,
-            java.util.HashSet<String> selectedMovieNames,
-            javax.swing.JComboBox<String> combo,
-            javax.swing.JSpinner spinner) {
-
+    private void addMovieRating(HashMap<Integer, Integer> selectedRatings, HashSet<String> selectedMovieNames, JComboBox<String> combo, JSpinner spinner) {
         String movieName = combo.getSelectedItem().toString();
 
         if (selectedMovieNames.contains(movieName)) {
@@ -275,8 +280,8 @@ public class GUI2 extends javax.swing.JFrame {
             int x = (int) spnX2.getValue();
             int k = (int) spnK2.getValue();
 
-            java.util.HashMap<Integer, Integer> selectedRatings = new java.util.HashMap<>();
-            java.util.HashSet<String> selectedMovieNames = new java.util.HashSet<>();
+            HashMap<Integer, Integer> selectedRatings = new HashMap<>();
+            HashSet<String> selectedMovieNames = new HashSet<>();
 
             addMovieRating(selectedRatings, selectedMovieNames, cmbMovie1, spnRating1);
             addMovieRating(selectedRatings, selectedMovieNames, cmbMovie2, spnRating2);
@@ -284,7 +289,7 @@ public class GUI2 extends javax.swing.JFrame {
             addMovieRating(selectedRatings, selectedMovieNames, cmbMovie4, spnRating4);
             addMovieRating(selectedRatings, selectedMovieNames, cmbMovie5, spnRating5);
 
-            java.util.ArrayList<String> recs = system.recommendFromManualRatings(selectedRatings, x, k);
+            ArrayList<String> recs = system.recommendFromManualRatings(selectedRatings, x, k);
 
             txtAreaMovieResult.setText("");
             for (String movie : recs) {
@@ -298,9 +303,14 @@ public class GUI2 extends javax.swing.JFrame {
 
     private void btnPreviousPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousPageActionPerformed
         // TODO add your handling code here:
-        GUI page1 = new GUI();
-        page1.setVisible(true);
-        this.dispose();
+        if (previousPage != null) {
+            previousPage.setVisible(true);
+            this.setVisible(false);
+        } else {
+            GUI page1 = new GUI();
+            page1.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnPreviousPageActionPerformed
 
     /**

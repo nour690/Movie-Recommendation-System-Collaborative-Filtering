@@ -3,6 +3,7 @@ package movierecommender;
 import java.io.*;
 import java.util.*;
 
+
 public class MovieRecommendationSystem {
 
     private ArrayList<UserRating> users = new ArrayList<>();
@@ -182,11 +183,7 @@ public class MovieRecommendationSystem {
         while (recommendations.size() < neededTotal && !heap.isEmpty()) {
             HeapNode similarUser = heap.extractMax();
 
-            ArrayList<Integer> movies = getTopUniqueMoviesFromUser(
-                    similarUser.ratings,
-                    kMovies,
-                    alreadyRecommended
-            );
+            ArrayList<Integer> movies = getTopUniqueMoviesFromUser(similarUser.ratings, kMovies, alreadyRecommended, targetVector);
 
             for (Integer movieId : movies) {
                 alreadyRecommended.add(movieId);
@@ -208,7 +205,7 @@ public class MovieRecommendationSystem {
         return recommendations;
     }
 
-    private ArrayList<Integer> getTopUniqueMoviesFromUser(int[] ratings, int k, HashSet<Integer> alreadyRecommended) {
+    private ArrayList<Integer> getTopUniqueMoviesFromUser(int[] ratings, int k, HashSet<Integer> alreadyRecommended, int[] targetVector) {
         ArrayList<Integer> movieIds = new ArrayList<>();
 
         for (int i = 0; i < ratings.length; i++) {
@@ -218,9 +215,7 @@ public class MovieRecommendationSystem {
                 movieId = i + 1;
             }
 
-            if (ratings[i] > 0
-                    && movieNames.containsKey(movieId)
-                    && !alreadyRecommended.contains(movieId)) {
+            if (ratings[i] > 0 && targetVector[i] == 0 && movieNames.containsKey(movieId) && !alreadyRecommended.contains(movieId)) {
                 movieIds.add(movieId);
             }
         }

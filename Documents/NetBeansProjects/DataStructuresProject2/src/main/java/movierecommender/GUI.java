@@ -4,12 +4,19 @@
  */
 package movierecommender;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
+
 /**
  *
- * @author Nour07
+ * @author Nour07okl
  */
 public class GUI extends javax.swing.JFrame {
+
     private MovieRecommendationSystem system;
+    private GUI2 page2;
+
     /**
      * Creates new form GUI
      */
@@ -18,10 +25,9 @@ public class GUI extends javax.swing.JFrame {
         try {
             system = new MovieRecommendationSystem("main_data.csv", "movies.csv", "target_user.csv");
 
-            
             cmbTargetUser.removeAllItems();
 
-            java.util.ArrayList<String> ids = system.getTargetUserIds();
+            ArrayList<String> ids = system.getTargetUserIds();
 
             ids.sort((a, b) -> Integer.compare(
                     Integer.parseInt(a),
@@ -32,10 +38,10 @@ public class GUI extends javax.swing.JFrame {
                 cmbTargetUser.addItem(id);
             }
             this.setTitle("Movie Recommender - Target User");
-            this.setLocationRelativeTo(null); 
+            this.setLocationRelativeTo(null);
 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error loading files: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error loading files: " + e.getMessage());
         }
     }
 
@@ -154,7 +160,7 @@ public class GUI extends javax.swing.JFrame {
             int x = (int) spnX1.getValue();
             int k = (int) spnK1.getValue();
 
-            java.util.ArrayList<String> recs = system.recommendForTargetUser(targetId, x, k);
+            ArrayList<String> recs = system.recommendForTargetUser(targetId, x, k);
 
             txtAreaTargetResult.setText("");
             for (String movie : recs) {
@@ -162,15 +168,18 @@ public class GUI extends javax.swing.JFrame {
             }
 
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_btnTargetRecommendActionPerformed
 
     private void btnNextPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextPageActionPerformed
         // TODO add your handling code here:
-        GUI2 page2 = new GUI2();
+        if (page2 == null) {
+            page2 = new GUI2(this);
+        }
+
         page2.setVisible(true);
-        this.dispose();
+        this.setVisible(false);
     }//GEN-LAST:event_btnNextPageActionPerformed
 
     /**
