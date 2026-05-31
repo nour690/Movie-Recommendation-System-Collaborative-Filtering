@@ -13,19 +13,19 @@ The system recommends movies in two ways:
 
 ### Target User Screen - Design Preview
 
-![Target User Design](screenshots/target-user-design.jpeg)
+![Target User Design](screenshots/target-user-design.png)
 
 ### Target User Recommendation Output
 
-![Target User Output](screenshots/target-user-output.jpeg)
+![Target User Output](screenshots/target-user-output.png)
 
 ### Manual Movie Rating Screen
 
-![Manual Rating Output](screenshots/manual-rating-output.jpeg)
+![Manual Rating Output](screenshots/manual-rating-output.png)
 
 ### Duplicate Movie Selection Validation
 
-![Duplicate Movie Validation](screenshots/duplicate-validation.jpeg)
+![Duplicate Movie Validation](screenshots/duplicate-validation.png)
 
 ---
 
