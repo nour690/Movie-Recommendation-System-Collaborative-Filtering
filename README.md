@@ -1,4 +1,4 @@
-# Movie Recommendation System
+# 🎬 Movie Recommendation System
 
 A Java Swing desktop application that recommends movies using heap-based collaborative filtering.
 
@@ -9,9 +9,9 @@ The system recommends movies in two ways:
 
 ---
 
-## Features
+## ✨ Features
 
-### Existing User Recommendation
+### 🎯 Existing User Recommendation
 
 - Select a target user from `target_user.csv`
 - Enter number of similar users (**X**)
@@ -24,7 +24,7 @@ The system recommends movies in two ways:
 
 ---
 
-### New User Recommendation
+### 🆕 New User Recommendation
 
 - Select 5 different movies
 - Enter ratings from **1–5**
@@ -37,9 +37,9 @@ The system recommends movies in two ways:
 
 ---
 
-## Project Screenshots
+## 🖼️ Project Screenshots
 
-### Target User Screen - Design Preview
+### 🎯 Target User Screen - Design Preview
 
 <p align="center">
   <img src="Screenshots/screenshotstarget-user-design.png" width="700">
@@ -47,7 +47,7 @@ The system recommends movies in two ways:
 
 ---
 
-### Target User Recommendation Output
+### ✅ Target User Recommendation Output
 
 <p align="center">
   <img src="Screenshots/screenshotstarget-user-output.png" width="700">
@@ -55,7 +55,7 @@ The system recommends movies in two ways:
 
 ---
 
-### Manual Movie Rating Screen
+### 🆕 Manual Movie Rating Screen
 
 <p align="center">
   <img src="Screenshots/screenshotsmanual-rating-output.png" width="700">
@@ -63,7 +63,7 @@ The system recommends movies in two ways:
 
 ---
 
-### Duplicate Movie Selection Validation
+### ⚠️ Duplicate Movie Selection Validation
 
 <p align="center">
   <img src="Screenshots/screenshotsduplicate-validation.png" width="700">
@@ -71,7 +71,7 @@ The system recommends movies in two ways:
 
 ---
 
-## Data Structures Used
+## 🧱 Data Structures Used
 
 ### Max Heap
 
@@ -108,7 +108,7 @@ Used for:
 
 ---
 
-## Recommendation Algorithm
+## 🧠 Recommendation Algorithm
 
 ### Existing User
 
@@ -202,3 +202,15 @@ Main concepts used:
 - Cosine similarity
 - CSV processing
 - Java Swing GUI
+
+---
+
+# 👨‍💻 Author
+
+Mohammad Nour ALTURKMANI
+
+Software Engineering Student @ FSMVU
+
+📍 Passionate about software engineering, GUI development, and database systems.
+
+🗓️ Final project developed during the Spring 2026 semester.
